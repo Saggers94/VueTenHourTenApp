@@ -3,12 +3,14 @@ import DCHeroes from "./pages/DCHeroes.vue";
 import Calendar from "./pages/Calendar.vue";
 import Home from "./pages/Home.vue";
 import Markdown from "./pages/Markdown.vue";
+import Slider from "./pages/Slider.vue";
 
 const routes = [
   { path: "/", component: Home },
   { path: "/dc-heroes", component: DCHeroes },
   { path: "/calendar", component: Calendar },
   { path: "/markdown", component: Markdown },
+  { path: "/slider", component: Slider },
 ];
 
 const router = createRouter({

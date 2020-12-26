@@ -18,6 +18,37 @@
 import marked from "marked";
 import debounce from "../utilities/mixins/debounce";
 export default {
+  //whenever we navigate to a different component, the current component would unmount itself and so
+  //it would call beforeunmount and unmounted
+  //Life cycle hooks
+  beforeCreate() {
+    console.log("before create");
+  },
+  created() {
+    console.log("created");
+  },
+  beforeMount() {
+    console.log("before mount");
+  },
+  mounted() {
+    console.log("mounted");
+  },
+  //whenever we switch to the another component the component on which we are in would call
+  // beforeUnmount and unmounted
+  beforeUnmount() {
+    console.log("before unmount");
+  },
+  unmounted() {
+    console.log("unmounted");
+  },
+  //whenever there will be an update inside the state then both of beforeUpdate and updated would call
+  //themselves
+  beforeUpdate() {
+    console.log("before update");
+  },
+  updated() {
+    console.log("updated");
+  },
   // When we use mixins it merges the properties of the mixin with the components properties
   mixins: [debounce],
   data() {

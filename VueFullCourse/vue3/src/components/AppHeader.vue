@@ -9,10 +9,14 @@
       v-bind:to="link.to"
       >{{ link.title }}</router-link
     >
+
+    <button class="mx-2" v-on:click="$emit('openLoginModal')">Login</button>
+    <button class="mx-2" v-on:click="logout()">Logout</button>
   </nav>
 </template>
 
 <script>
+import firebase from "../utilities/firebase";
 export default {
   data() {
     return {
@@ -20,8 +24,22 @@ export default {
         { title: "DCHeroes", to: "/dc-heroes" },
         { title: "Calendar", to: "/calendar" },
         { title: "Markdown", to: "/markdown" },
+        { title: "Slider Carousel", to: "/slider" },
       ],
     };
+  },
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
