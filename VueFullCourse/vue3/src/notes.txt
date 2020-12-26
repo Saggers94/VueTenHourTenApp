@@ -1,0 +1,49 @@
+<!--<template>
+  <!-- <h1>{{ title }}</h1> -->
+<!-- Do not use v-html ever as it opens your site to XSS(cross-site scripting attack) through manually
+    generating the script tag html in the tags
+   -->
+<!-- Even the expression of true and false would execute correctly -->
+<!-- <div v-if="2 * 2 == 4" v-html="title"></div> -->
+<!-- <div v-if="isShowing" v-html="title"></div> -->
+
+<!-- v-else-if should always be after the v-if or v-else-if -->
+<!-- <h3 v-else-if="isShowing === null">This is v-else-if</h3> -->
+
+<!-- <h2 v-else>This is the v-else part</h2> -->
+<!-- In Vue2 there should be only one root element here but since it is a vue3 multiple elements
+  are allowed -->
+
+<!-- v-show would use display:none so the h1 will not appear while all the if,else and else if 
+  would just comment the whole tag -->
+<!-- When we use v-show that means the html tag related to is just hidden but it will remain
+  the part of the dom -->
+<!-- <h1 v-show="false">{{ count }}</h1> -->
+
+<!-- This will write a simple text in the tag based on the variable value -->
+<!-- <h1 v-text="count"></h1> -->
+
+<!-- v-once would only render the tag once that is binded or interpolated with it. so in 
+  this case even though the value of the count is increasing because v-once is rendering
+  it only one time we would see only zero  -->
+<!-- <h1 v-once><span>Count is: </span> {{ count }}</h1>
+  <p>Something else</p>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      // title: "heyy Vue3",
+      title: "<h1>This is the h1 inside the title variable</h1>",
+      isShowing: false,
+      count: 0,
+    };
+  },
+  mounted() {
+    setInterval(() => {
+      this.count++;
+    }, 1000);
+  },
+};
+</script> -->
