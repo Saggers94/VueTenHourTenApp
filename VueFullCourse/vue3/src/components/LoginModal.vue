@@ -11,10 +11,14 @@
         <div class="z-30 m-auto bg-gray-100 rounded shadow-md p-2 w-1/3">
           <div class="border p-3">
             <h1 class="text-2xl text-center">Login</h1>
+            <Google v-on:closeLoginFromGoogle="close" />
+
+            <p class="text-center mb-3">Or</p>
             <form class="p-3 my-3" v-on:submit.prevent="submit">
               <div class="my-4">
                 <label>Email or Username</label>
                 <input
+                  ref="loginEmailRef"
                   v-model="email"
                   class="rounded shadow p-2 w-full"
                   placeholder="Enter email or username"
@@ -48,8 +52,10 @@
 
 <script>
 import firebase from "../utilities/firebase";
+import Google from "../components/Login/Google";
 
 export default {
+  components: { Google },
   data() {
     return {
       email: "sagar@gmail.com",
@@ -78,6 +84,9 @@ export default {
     close() {
       this.$emit("closeLogin");
     },
+  },
+  mounted() {
+    this.$refs.loginEmailRef.focus();
   },
 };
 </script>

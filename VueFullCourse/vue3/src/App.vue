@@ -1,13 +1,21 @@
 <template>
   <div>
-    <AppHeader v-on:openLoginModal="isLoginOpen = true" />
+    <!-- Whenever you provide props make sure that it is binded with v-bind -->
+    <AppHeader
+      v-bind:isLoggedIn="isLoggedIn"
+      v-on:openLoginModal="isLoginOpen = true"
+    />
     <!-- <div class="w-full flex">
     <DCHeroes />
   </div> -->
     <div class="w-full flex">
       <router-view></router-view>
     </div>
-    <LoginModal v-if="isLoginOpen" v-on:closeLogin="isLoginOpen = false" />
+    <!-- You can teleport the whole component to any place inside the DOM with teleport,
+        You can even use '#app'(id) or ".app"(class) anything you want to use. -->
+    <teleport to="body">
+      <LoginModal v-if="isLoginOpen" v-on:closeLogin="isLoginOpen = false" />
+    </teleport>
     <AppFooter />
   </div>
 </template>

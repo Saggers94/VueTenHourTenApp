@@ -45,7 +45,7 @@
     <!-- <button @click="newHero = 'Wonder Woman'">Add Hero</button> -->
 
     <form class="mt-10 border rounded" @submit.prevent="addHero">
-      <input v-model="newHero" placeholder="Type Hero Name" />
+      <input v-model="newHero" placeholder="Type Hero Name" ref="newHeroRef" />
       <button
         class="w-auto ml-6 p-2 mb-3 border rounded bg-gradient-to-r from-blue-700 to-purple-800 text-black"
         type="submit"
@@ -58,86 +58,137 @@
 </template>
 
 <script>
+import { ref, onMounted, computed } from "vue";
 export default {
-  data() {
-    return {
-      // dcheroes: {
-      //   SuperMan: "SuperMan",
-      //   Aquaman: "Aquaman",
-      //   Batman: "Batman",
-      //   Flash: "Flash",
-      //   SuperGirl: "SuperGirl",
-      //   Arrow: "Arrow",
-      // },
-      //   fname: "sagar",
-      //   lname: "parmar",
-      //   attribute: "value",
-      //   isDisabled: true,
-      newHero: "",
-      dcheroes: [
-        { name: "SuperMan" },
-        { name: "Batman" },
-        { name: "Flash" },
-        { name: "SuperGirl" },
-        { name: "Arrow" },
-      ],
-      // This computing of heroescount
-      // will never work as dcheroes would only be defined after evaluating all of the
-      //variable. So we would need to use ComputedProperties
-      // heroesCount: this.dcheroes.length,
-    };
-  },
-  // Remember methods cannot use arrow function because we won't be able to access 'this' and without
-  // 'this' we won't be able to access the variables that we have inside the data function of vue
-  // Methods will execute every time and they are not stored in a cache so that every random value
-  // would have different number every time
-  methods: {
-    addHero() {
+  setup() {
+    const newHeroRef = ref("");
+    const newHero = ref("");
+    const dcheroes = ref([
+      { name: "SuperMan" },
+      { name: "Batman" },
+      { name: "Flash" },
+      { name: "SuperGirl" },
+      { name: "Arrow" },
+    ]);
+
+    onMounted(() => {
+      newHeroRef.value.focus();
+    });
+
+    const heroesCount = computed({
+      get: () => dcheroes.value.length,
+    });
+
+    function remove(index) {
       console.log("here");
-      if (this.newHero !== "") {
-        // unshift add the value to the beginning
-        console.log(this.newHero);
-        this.dcheroes.unshift({ name: this.newHero });
-        console.log(this.dcheroes);
-        this.newHero = "";
-      }
-    },
-    remove(index) {
-      console.log("here");
-      this.dcheroes = this.dcheroes.filter((hero, i) => {
+      dcheroes.value = dcheroes.value.filter((hero, i) => {
         return i != index;
       });
-    },
-    randM() {
-      return Math.random();
-    },
-    //when we use this method as fullName is the computed property. What will happen is, this would search
-    //for set function of the fullName where its defined and if we have defined the set function there
-    //than that set function would get call otherwise it won't do anything.
-    setFullName() {
-      this.fullName = "Simran Sachdev";
-    },
+    }
+
+    function addHero() {
+      console.log("here");
+      if (newHero.value !== "") {
+        // unshift add the value to the beginning
+        // console.log(newHero);
+        dcheroes.value.unshift({ name: newHero.value });
+        // console.log(dcheroes);
+        newHero.value = "";
+      }
+    }
+
+    return {
+      newHero,
+      dcheroes,
+      remove,
+      addHero,
+      newHeroRef,
+      heroesCount,
+    };
   },
-  // Computed properties are stored in a cache so they won't change but if any dependency(state) would
-  //change only than this property would change
-  computed: {
-    heroesCount() {
-      return this.dcheroes.length + " Heroes";
-    },
-    fullName: {
-      get() {
-        return `Full Name is ${this.fname} ${this.lname}`;
-      },
-      set(fullName) {
-        const values = fullName.split(" ");
-        this.fname = values[0];
-        this.lname = values[1];
-      },
-    },
-    randC() {
-      return this.dcheroes.length + Math.random();
-    },
-  },
+  // data() {
+  //   return {
+  //     // dcheroes: {
+  //     //   SuperMan: "SuperMan",
+  //     //   Aquaman: "Aquaman",
+  //     //   Batman: "Batman",
+  //     //   Flash: "Flash",
+  //     //   SuperGirl: "SuperGirl",
+  //     //   Arrow: "Arrow",
+  //     // },
+  //     //   fname: "sagar",
+  //     //   lname: "parmar",
+  //     //   attribute: "value",
+  //     //   isDisabled: true,
+  //     newHero: "",
+  //     dcheroes: [
+  //       { name: "SuperMan" },
+  //       { name: "Batman" },
+  //       { name: "Flash" },
+  //       { name: "SuperGirl" },
+  //       { name: "Arrow" },
+  //     ],
+  //     // This computing of heroescount
+  //     // will never work as dcheroes would only be defined after evaluating all of the
+  //     //variable. So we would need to use ComputedProperties
+  //     // heroesCount: this.dcheroes.length,
+  //   };
+  // },
+  // // Remember methods cannot use arrow function because we won't be able to access 'this' and without
+  // // 'this' we won't be able to access the variables that we have inside the data function of vue
+  // // Methods will execute every time and they are not stored in a cache so that every random value
+  // // would have different number every time
+  // methods: {
+  // addHero() {
+  //   console.log("here");
+  //   if (this.newHero !== "") {
+  //     // unshift add the value to the beginning
+  //     console.log(this.newHero);
+  //     this.dcheroes.unshift({ name: this.newHero });
+  //     console.log(this.dcheroes);
+  //     this.newHero = "";
+  //   }
+  // },
+  //   remove(index) {
+  //     console.log("here");
+  //     this.dcheroes = this.dcheroes.filter((hero, i) => {
+  //       return i != index;
+  //     });
+  //   },
+  //   randM() {
+  //     return Math.random();
+  //   },
+  //   //when we use this method as fullName is the computed property. What will happen is, this would search
+  //   //for set function of the fullName where its defined and if we have defined the set function there
+  //   //than that set function would get call otherwise it won't do anything.
+  //   setFullName() {
+  //     this.fullName = "Simran Sachdev";
+  //   },
+  // },
+  // mounted() {
+  //   //getting the reference of the field like we do in the vanilla javascript with "document.getElementById"
+  //   this.$refs.newHeroRef.focus();
+  // },
+  // // Computed properties are stored in a cache so they won't change but if any dependency(state) would
+  // //change only than this property would change
+  // computed: {
+  //   heroesCount() {
+  //     return this.dcheroes.length + " Heroes";
+  //   },
+  //   fullName: {
+  //     get() {
+  //       return `Full Name is ${this.fname} ${this.lname}`;
+  //     },
+  //     set(fullName) {
+  //       const values = fullName.split(" ");
+  //       this.fname = values[0];
+  //       this.lname = values[1];
+  //     },
+  //   },
+  //   randC() {
+  //     return this.dcheroes.length + Math.random();
+  //   },
+  // },
 };
 </script>
 

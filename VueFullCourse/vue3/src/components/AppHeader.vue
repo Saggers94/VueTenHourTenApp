@@ -10,14 +10,27 @@
       >{{ link.title }}</router-link
     >
 
-    <button class="mx-2" v-on:click="$emit('openLoginModal')">Login</button>
-    <button class="mx-2" v-on:click="logout()">Logout</button>
+    <button
+      v-if="!isLoggedIn"
+      class="mx-2"
+      v-on:click="$emit('openLoginModal')"
+    >
+      Login
+    </button>
+    <button v-if="isLoggedIn" class="mx-2" v-on:click="logout()">
+      Logout
+    </button>
   </nav>
 </template>
 
 <script>
 import firebase from "../utilities/firebase";
 export default {
+  // If you want to stricttype variable in the props than you need to use object instead of an array
+  //And only than you would be able to define the datatype of the prop that is called as propType
+  //you can even provide default value of the dattype with the object again
+  // props: { isLoggedIn: { type: Boolean, required: true, default: false } },
+  props: { isLoggedIn: { type: Boolean, required: true } },
   data() {
     return {
       linkList: [

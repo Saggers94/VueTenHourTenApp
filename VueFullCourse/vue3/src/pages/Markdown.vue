@@ -4,6 +4,7 @@
     <section class="flex m-auto w-10/12 h-screen">
       <article class="w-1/2 border">
         <textarea
+          ref="markdownRef"
           class="w-full h-full"
           v-bind:value="text"
           @input="update"
@@ -31,6 +32,7 @@ export default {
     console.log("before mount");
   },
   mounted() {
+    this.$refs.markdownRef.focus();
     console.log("mounted");
   },
   //whenever we switch to the another component the component on which we are in would call
