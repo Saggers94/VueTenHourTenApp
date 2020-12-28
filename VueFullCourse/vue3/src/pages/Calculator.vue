@@ -116,23 +116,25 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+import useWindowEvent from "../utilities/composition/useWindowEvent";
 export default {
   setup() {
     // const calculation = ref("");
     const operations = ["+", "-", "*", "/"];
+    const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
     const currentNum = ref("");
     const prevNum = ref("");
     const selectedOperation = ref("");
 
     function pressed(value) {
-      if (value === "=") {
+      if (value === "=" || value == "Enter") {
         calculate();
       } else if (value === "c") {
         clear();
       } else if (operations.includes(value)) {
         applyOperation(value);
-      } else {
+      } else if (numbers.includes(value)) {
         appendNumber(value);
       }
 
@@ -140,6 +142,7 @@ export default {
     }
 
     function applyOperation(value) {
+      calculate();
       prevNum.value = currentNum.value;
       currentNum.value = "";
       selectedOperation.value = value;
@@ -179,11 +182,12 @@ export default {
       currentNum.value = "";
     }
 
-    onMounted(() => {
-      window.addEventListener("keydown", (e) => {
-        console.log(e.key);
-      });
-    });
+    const handleKeyDown = (e) => {
+      console.log(e.key);
+      pressed(e.key);
+    };
+
+    useWindowEvent("keydown", handleKeyDown);
 
     return {
       currentNum,

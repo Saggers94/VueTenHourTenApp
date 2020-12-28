@@ -17,7 +17,9 @@
 
 <script>
 import marked from "marked";
-import debounce from "../utilities/mixins/debounce";
+import useDebounce from "../utilities/composition/useDebounce";
+// import debounce from "../utilities/mixins/debounce";
+
 export default {
   //whenever we navigate to a different component, the current component would unmount itself and so
   //it would call beforeunmount and unmounted
@@ -32,6 +34,8 @@ export default {
     console.log("before mount");
   },
   mounted() {
+    const { debounce } = useDebounce();
+    this.debounce = debounce;
     this.$refs.markdownRef.focus();
     console.log("mounted");
   },
@@ -51,10 +55,13 @@ export default {
   updated() {
     console.log("updated");
   },
+
   // When we use mixins it merges the properties of the mixin with the components properties
-  mixins: [debounce],
+  // mixins: [debounce],
+
   data() {
     return {
+      debounce: "",
       text: "",
     };
   },
