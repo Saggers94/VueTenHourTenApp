@@ -4,7 +4,7 @@
       v-for="chat in state.chats"
       v-bind:key="chat"
       class="w-full "
-      v-bind:class="chat.userId == state.userId ? 'text-right' : ''"
+      v-bind:class="chat.userId == userId ? 'text-right' : ''"
     >
       {{ chat.message }}
     </div>
@@ -17,8 +17,10 @@
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
-import firebase, { chatsRef } from "../utilities/firebase";
+import { onMounted, reactive, computed } from "vue";
+import { chatsRef } from "../utilities/firebase";
+import { useStore } from "vuex";
+
 export default {
   setup() {
     //ref is created for just one singular data
@@ -28,7 +30,12 @@ export default {
     const state = reactive({
       chats: [],
       message: "",
-      userId: null,
+    });
+
+    const store = useStore();
+    const userId = computed(() => {
+      console.log(store.state.authUser.uid);
+      return store.state.authUser.uid;
     });
 
     onMounted(async () => {
@@ -37,21 +44,24 @@ export default {
 
       chatsRef.on("child_added", (snapshot) => {
         // state.chats = snapshot.val();
-        state.userId = firebase.auth().currentUser.uid;
+        // state.userId = firebase.auth().currentUser.uid;
         state.chats.push({ key: snapshot.key, ...snapshot.val() });
-        console.log(snapshot.key);
+        // console.log(snapshot.key);
       });
     });
-
+    console.log(userId);
     const addMessage = () => {
+      //   console.log(userId);
       const newChat = chatsRef.push();
-      newChat.set({ userId: state.userId, message: state.message });
+
+      newChat.set({ userId: store.state.authUser.uid, message: state.message });
       state.message = "";
     };
 
     return {
       state,
       addMessage,
+      userId,
     };
   },
 };

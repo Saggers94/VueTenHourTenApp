@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isLoginOpen">
     <!-- we can use $emit to raise the custom event to parent and than parent can manipulate
       the Dom object by changing the state, in this example we are doing that with the login-modal -->
     <section
@@ -82,11 +82,16 @@ export default {
         });
     },
     close() {
-      this.$emit("closeLogin");
+      this.$store.commit("setLoginModal", false);
     },
   },
   mounted() {
-    this.$refs.loginEmailRef.focus();
+    // this.$refs.loginEmailRef.focus();
+  },
+  computed: {
+    isLoginOpen() {
+      return this.$store.state.isLoginOpen;
+    },
   },
 };
 </script>

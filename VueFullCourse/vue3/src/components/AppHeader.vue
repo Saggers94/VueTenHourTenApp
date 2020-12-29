@@ -10,11 +10,7 @@
       >{{ link.title }}</router-link
     >
 
-    <button
-      v-if="!isLoggedIn"
-      class="mx-2"
-      v-on:click="$emit('openLoginModal')"
-    >
+    <button v-if="!isLoggedIn" class="mx-2" v-on:click="openLogin">
       Login
     </button>
     <button v-if="isLoggedIn" class="mx-2" v-on:click="logout()">
@@ -30,7 +26,7 @@ export default {
   //And only than you would be able to define the datatype of the prop that is called as propType
   //you can even provide default value of the dattype with the object again
   // props: { isLoggedIn: { type: Boolean, required: true, default: false } },
-  props: { isLoggedIn: { type: Boolean, required: true } },
+  // props: { isLoggedIn: { type: Boolean, required: true } },
   data() {
     return {
       linkList: [
@@ -41,8 +37,15 @@ export default {
         { title: "Calculator", to: "/calculator" },
         { title: "Modal", to: "/reusable-modal" },
         { title: "Chat", to: "/chat" },
+        { title: "UserCrud", to: "/usercrud" },
       ],
+      // store: this.$store.state
     };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
   },
   methods: {
     logout() {
@@ -55,6 +58,9 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    openLogin() {
+      this.$store.commit("setLoginModal", true);
     },
   },
 };

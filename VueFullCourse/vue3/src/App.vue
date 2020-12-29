@@ -1,10 +1,8 @@
 <template>
   <div>
     <!-- Whenever you provide props make sure that it is binded with v-bind -->
-    <AppHeader
-      v-bind:isLoggedIn="isLoggedIn"
-      v-on:openLoginModal="isLoginOpen = true"
-    />
+    <!-- <AppHeader v-on:openLoginModal="isLoginOpen = true" /> -->
+    <AppHeader />
     <!-- <div class="w-full flex">
     <DCHeroes />
   </div> -->
@@ -14,7 +12,8 @@
     <!-- You can teleport the whole component to any place inside the DOM with teleport,
         You can even use '#app'(id) or ".app"(class) anything you want to use. -->
     <teleport to="body">
-      <LoginModal v-if="isLoginOpen" v-on:closeLogin="isLoginOpen = false" />
+      <!-- <LoginModal v-on:closeLogin="isLoginOpen = false" /> -->
+      <LoginModal />
     </teleport>
     <AppFooter />
   </div>
@@ -33,22 +32,21 @@ export default {
   data() {
     return {
       isLoginOpen: false,
-      isLoggedIn: false,
-      authUser: {},
     };
   },
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log(user);
-        this.isLoggedIn = true;
-        this.authUser = user;
+        this.$store.commit("setIsLoggedIn", true);
+        this.$store.commit("setAuthUser", user);
+
         // User is signed in.
       } else {
         // No user is signed in.
         console.log("No User");
-        this.isLoggedIn = false;
-        this.authUser = {};
+        this.$store.commit("setIsLoggedIn", false);
+        this.$store.commit("setAuthUser", {});
       }
     });
   },
